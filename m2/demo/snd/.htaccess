@@ -1,0 +1,3 @@
+Options +Indexes
+AddType audio/ogg .ogg
+AddType audio/mpeg .mp3

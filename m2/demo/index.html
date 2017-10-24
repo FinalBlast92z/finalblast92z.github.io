@@ -1,0 +1,255 @@
+<html>
+   <head>
+      <title>MyPlayer Demos</title>
+   </head>
+   <body>
+      <a name="top"></a>
+
+      <p>[<a title="Back to Index" target="_self" href="../index.html">Back to Index</a>]</p>
+
+      <h1>MyPlayer Usage by Examples</h1>
+
+      <h2>Table of Contents</h2>
+
+      <ul>
+         <li><a href="#always" title="Alwas Required" target="_self">Always Required</a> - Including MyPlayer. Setting up MIME-Types.</li>
+         <li><a href="#list" title="Mode &quot;list&quot;" target="_self">Mode "list"</a> - Playing a JavaScript array of audio file URLs and titles.</li>
+         <li><a href="#mp3url" title="Mode &quot;mp3url&quot;" target="_self">Mode "mp3url"</a> - Reading lists of audio files from index documents.</li>
+         <li><a href="#m3u" title="Mode &quot;m3u&quot;" target="_self">Mode "m3u"</a> - Reading lists of audio files from <tt>.m3u</tt> files.</li>
+         <li><a href="#element" title="Option &quot;element&quot;" target="_self">Option "element"</a> - Where the player/playlist should be placed.</li>
+         <li><a href="#detachable" title="Option &quot;detachable&quot;" target="_self">Option "detachable"</a> - If the player can be detached or not.</li>
+         <li><a href="#id3" title="Option &quot;id3&quot;" target="_self">Option "id3"</a> - Interpreting ID3-tags.</li>
+         <li><a href="#autoplay" title="Option &quot;autoplay/loop/shuffle&quot;" target="_self">Options "autoplay", "loop" and "shuffle"</a> - Player behavior and defaults.</li>
+         <li><a href="#types" title="Option &quot;types&quot;" target="_self">Option "types"</a> - Specifying filename-endings to consider.</li>
+         <li><a href="#filematch" title="Option &quot;filematch&quot;" target="_self">Option "filematch"</a> - Specifying an URL-matching expression.</li>
+         <li><a href="#network" title="Option &quot;network&quot;" target="_self">Option "network"</a> - Limited support for network streams.</li>
+      </ul>
+
+      <h2><a name="always">Always Required</a></h2>
+
+      <p>To embed MyPlayer in your webpage put this in the <tt>&lt;head&gt;</tt>
+      section of your document:
+
+<pre>&lt;script type="text/javascript" src="/path/to/js/jquery.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="/path/to/js/myplayer.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="/path/to/css/myplayer.css" /&gt;</pre>
+
+      <p>Some (most?) webservers should be configured to serve audio files with their correct
+      MIME-Types so that playback in the browser works reliably. The following example
+      for the Apache webserver could be included in a file <tt>.htaccess</tt> in the
+      directory holding the audio files:</p>
+
+<pre>AddType audio/mpeg .mp3
+AddType audio/ogg .ogg</pre>
+
+      <p>This example will enable correct MIME-Types when serving files that end with
+      <tt>.mp3</tt> or <tt>.ogg</tt>.</p>
+
+      <h2><a name="list">Mode "list"</a></h2>
+
+      <p>If you have URLs of audio files as a JavaScript array, create the player 
+      with option <tt>mode</tt> set to <tt>"list"</tt>. The list items are passed
+      either in object notation or as a plain strings containing the URLs:</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode: 'list',
+   list: [
+      {url: '/something.mp3', title: 'Something'},
+      {url: 'http://example.com/snd/else.mp3'},
+      "./entirely.ogg"
+   ]
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer list Demo" href="list.html" target="_blank">list.html</a></p>
+
+      <p><i>Note:</i> The property <tt>title</tt> is optional, and if it is
+      omitted, the last component of the URL path is used as a title in
+      the playlist. In above example, the second entry's title would be
+      <tt>else.mp3</tt> and the third one's would be <tt>entirely.ogg</tt>.</p>
+
+      <h2><a name="mp3url">Mode "mp3url"</a></h2>
+
+      <p>Play all links ending with <tt>.mp3</tt> found at a given URL <tt>mp3url</tt>:.
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode:   'mp3url',
+   mp3url: '/directory/with/your/mp3s/'
+})});&lt;/script&gt;</pre>
+
+      <p><i>Note:</i> Directory indexes should be enabled on the directory containing
+      the files, when using the Apache webserver this can be possible by placing an
+      <tt>.htaccess</tt> file into that directory:</p>
+
+<pre>Options +Indexes</pre>
+
+      <p>Demo: <a title="MyPlayer mp3url Demo" href="mp3url.html" target="_blank">mp3url.html</a></p>
+
+      <h2><a name="m3u">Mode "m3u"</a></h2>
+
+      <p>Play all links found in an M3U-File specified by URL <tt>m3u</tt>:</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode: 'm3u',
+   m3u:  '/some/place/play.m3u'
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer m3u Demo" href="m3u.html" target="_blank">m3u.html</a></p>
+
+      <p>If the M3U is in EXTM3U format, the player will attempt to parse the EXTINF
+      information (playtime, title) where available.</p>
+
+      <p>Demo: <a title="MyPlayer extm3u Demo" href="extm3u.html" target="_blank">extm3u.html</a></p>
+
+      <p><i>Note:</i> The player will to some degree try to resolve relative entries
+      in an M3U. If an entry is encountered that is not an absolute <tt>https?|ftp|file</tt>
+      URL, it will try to make the entry absolute by prepending it with the path
+      of the M3U.</p>
+
+      <p>Demo: <a title="MyPlayer relative m3u Demo" href="relative-m3u.html" target="_blank">relative-m3u.html</a></p>
+
+      <h2><a name="element">Option "element"</a></h2>
+
+      <p>The default for the player is to append its UI to the <tt>&lt;body&gt;</tt>
+      of the current document. Using the <tt>element</tt> option you have more
+      control over the placement of the player UI. This option uses jQuery selector
+      notation.</p>
+
+      <p>Append the player UI to the contents of the element with ID <tt>myplayer</tt>:</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   element: '#myplayer',
+   mode:    'm3u',
+   m3u:     '/some/place/play.m3u'
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer element Demo" href="element.html" target="_blank">element.html</a></p>
+
+      <h2><a name="detachable">Option "detachable"</a></h2>
+
+      <p>The default for the player is to offer a "detach" button that will cause
+      it to re-open itself in a separate (popup) window. If you do not
+      want this, set the option <tt>detachable</tt> to <tt>false</tt>:</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode:       'm3u',
+   m3u:        '/some/place/play.m3u',
+   detachable: false
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer detachable Demo" href="detachable.html" target="_blank">detachable.html</a></p>
+
+      <h2><a name="id3">Option "id3"</a></h2>
+
+      <p><i>Important Note:</i> My tests prove the ID3 implementation provided
+      here to be unreliable. Please use this option with caution. If you want
+      to provide neatly formatted metadata for your tracks, please also consider
+      the <tt><a href="#m3u">m3u</a></tt> option with EXTINF information.</p>
+
+      <p>Setting the option <tt>id3</tt> to <tt>true</tt> will cause the player 
+      to attempt reading artist name and track title from the ID3 tags found in 
+      the <tt>.mp3</tt> files.</p>
+
+      <p>Playback can commence before the lookups are complete (they might take
+      a while). An Ajax loading indicator is displayed for a few seconds next to 
+      the tracks currently being looked up.</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode: 'm3u',
+   m3u:  '/some/place/play.m3u',
+   id3:  true
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer id3 Demo" href="id3.html" target="_blank">id3.html</a></p>
+
+      <p><i>Note:</i> If you do not want the animated loading indicator, you
+      can prevent it by setting the option <tt>loader</tt> to <tt>false</tt>.</p>
+
+      <h2><a name="autoplay">Options "autoplay", "loop", "shuffle"</a></h2>
+
+      <p>Setting the option <tt>autoplay</tt> to <tt>true</tt> will cause the
+      player to immediately start playback when the site is ready.</p>
+
+      <p>Setting the option <tt>loop</tt> to <tt>false</tt> will cause the
+      "Loop" function to be disabled when the player is loaded.</p>
+
+      <p>Setting the option <tt>shuffle</tt> to <tt>true</tt> will cause the
+      "Shuffle" function to be enabled when the player is loaded.</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode:     'm3u',
+   m3u:      '/some/place/play.m3u',
+   autoplay: true,
+   loop:     false,
+   shuffle:  true
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer autoplay/loop/shuffle Demo" href="autoplay.html" target="_blank">autoplay.html</a></p>
+
+      <h2><a name="types">Option "types"</a></h2>
+
+      <p>Setting the option <tt>types</tt> to a non-empty array of strings
+      will interpret those strings as filename endings to consider for playback.
+      The matching will be performed case-insensitive.</p>
+
+      <p>The following example will build the playlist from the lines in
+      the given <tt>play.m3u</tt>, but it will only consider entries that end
+      with <tt>.ogg</tt>:</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode:  'm3u',
+   m3u:   '/some/place/play.m3u',
+   types: ['ogg']
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer types Demo" href="types.html" target="_blank">types.html</a></p>
+
+      <h2><a name="filematch">Option "filematch"</a></h2>
+
+      <p>Setting the option <tt>filematch</tt> to a RegExp object will cause
+      filename matching to be performed using that regular expression.</p>
+
+      <p><i>Note:</i> If this option and the option <tt>types</tt> are both
+      present, then this option has no effect, and the values in the array
+      <tt>types</tt> apply instead.</p>
+
+      <p>The following example will build the playlist from the lines in
+      the given <tt>play.m3u</tt>, but it will only consider entries that 
+      start with a digit and end with <tt>.ogg</tt>. Please note that
+      matching is performed on the entire URL, so in order to match
+      the filename only, more complex regular expressing is neccessary:</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode:      'm3u',
+   m3u:       '/some/place/play.m3u',
+   filematch:  /(^|\/)[0-9][^\/]*\.mp3/i
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer filematch Demo" href="filematch.html" target="_blank">filematch.html</a></p>
+
+      <h2><a name="network">Option "network"</a></h2>
+
+      <p>Setting the option <tt>network</tt> to <tt>true</tt> enables limited support 
+      for network streams (native playback does not work with some broadcast servers).</p>
+
+      <p>All filename matching will be disabled, meaning the <tt>types</tt>
+      and <tt>filematch</tt> options have no effect.</p>
+
+      <p>The timerail will be disabled in the GUI.</p>
+
+      <p>Play an M3U containing only network stream entries:</p>
+
+<pre>&lt;script type="text/javascript"&gt;$(function(){MyPlayer({
+   mode:    'm3u',
+   m3u:     'http://example.com/streaming.m3u',
+   network: true
+})});&lt;/script&gt;</pre>
+
+      <p>Demo: <a title="MyPlayer network Demo" href="network.html" target="_blank">network.html</a></p>
+
+      <p><i>Implementation Note:</i> if <tt>network</tt> is set to <tt>true</tt> then 
+      <tt>mediaelement.js</tt> will be forced to mode <tt>'native'</tt> on network streams 
+      (this is accomplished by a patch to <tt>mediaelement.js</tt>).</p>
+
+      <p>[<a title="Back to Top" target="_self" href="#top">Back to Top</a>]</p>
+   </body>
+</html>

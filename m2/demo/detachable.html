@@ -1,0 +1,28 @@
+<html>
+<head>
+   <base href="." />
+
+   <title>MyPlayer Detachable Demo</title>
+
+   <script type="text/javascript" src="../js/jquery.js"></script>
+   <script type="text/javascript" src="../js/myplayer.min.js"></script>
+
+   <link rel="stylesheet" href="../css/myplayer.css" />
+
+   <script type="text/javascript">$(function(){MyPlayer({
+      mode:       'm3u',
+      m3u:        './snd/play.m3u',
+      detachable: false
+   })});</script>
+
+   <style type="text/css">
+      h1, p { color: white; }
+   </style>
+</head>
+<body>
+    <noscript>
+        Javascript is required to use the MP3 player.
+        Please choose of the alternatives listed below.
+    </noscript>
+</body>
+</html>

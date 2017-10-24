@@ -1,0 +1,27 @@
+<html>
+<head>
+   <base href="." />
+
+   <title>MyPlayer M3U Demo</title>
+
+   <script type="text/javascript" src="../js/jquery.js"></script>
+   <script type="text/javascript" src="../js/myplayer.min.js"></script>
+
+   <link rel="stylesheet" href="../css/myplayer.css" />
+
+   <script type="text/javascript">$(function(){MyPlayer({
+      mode: 'list',
+      waveform: true,
+      list: [
+         { url:   './snd/dreamz.mp3', 
+           title: 'tilt - Dreamz' }
+      ]
+   })});</script>
+</head>
+<body>
+    <noscript>
+        Javascript is required to use the MP3 player.
+        Please choose of the alternatives listed below.
+    </noscript>
+</body>
+</html>

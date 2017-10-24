@@ -1,0 +1,31 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /the_blog/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /the_blog/index.php [L]
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+AddType audio/mpeg .mp3
+AddType audio/ogg .ogg
+</IfModule>
+Options -Indexes 
+AddHandler fcgid-script .html
+FCGIWrapper /usr/local/cpanel/cgi-sys/php5 .html
+
+<IfModule mod_rewrite.c> 
+Options +Multiviews
+Options +FollowSymLinks
+# Turn mod_rewrite on
+RewriteEngine On
+RewriteBase /
+
+# To externally redirect /dir/foo.html to /dir/foo
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.html [NC]
+RewriteRule ^ %1 [R,L,NC]
+
+## To internally redirect /dir/foo to /dir/foo.html
+RewriteCond %{REQUEST_FILENAME}.html -f [NC]
+RewriteRule ^ %{REQUEST_URI}.html [L]
+</IfModule>

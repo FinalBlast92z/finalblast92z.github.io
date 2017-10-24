@@ -1,0 +1,5 @@
+#EXTM3U
+#EXTINF:-1,NoLife-radio
+http://37.187.79.56:2868/stream
+#EXTINF:-1,ZaycevFM (128k)
+http://radio.zaycev.fm:8999/ZaycevFM(128)
