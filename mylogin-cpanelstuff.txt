@@ -1,7 +1,0 @@
-http://cpanel.free-cluster.com/ = to login into your cPanel at freehosting.io
-
-
-fhio_20460074 = FinalBlast92z
-fhio_20886932 = martina_black
-
-
